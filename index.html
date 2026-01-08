@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kalkulator Gaji Bersih Karyawan</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f4f4f4;
+        }
+        h1 {
+            text-align: center;
+            color: #333;
+        }
+        form {
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: bold;
+        }
+        input[type="number"] {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 20px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+        button {
+            width: 100%;
+            padding: 10px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+        #hasil {
+            margin-top: 20px;
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            display: none;
+        }
+        #hasil p {
+            margin: 10px 0;
+        }
+
+        .footer {
+            text-align: center;
+            padding: 10px 0;
+            margin-top: 20px;
+            font-size: 14px;
+            color: #666;
+            opacity: 45%; 
+        }
+    </style>
+</head>
+<body>
+    <h1>Kalkulator Gaji Bersih Karyawan</h1>
+    <form id="gajiForm">
+        <label for="gajiPokok">Gaji Pokok (dalam Rupiah):</label>
+        <input type="number" id="gajiPokok" min="0" step="0.01" required>
+
+        <label for="jamLembur">Jumlah Jam Lembur (dalam jam):</label>
+        <input type="number" id="jamLembur" min="0" step="0.01" required>
+
+        <button type="submit">Hitung Gaji Bersih</button>
+    </form>
+
+    <div id="hasil">
+        <h2>Rincian Gaji Karyawan</h2>
+        <p id="gajiPokokHasil"></p>
+        <p id="totalLemburHasil"></p>
+        <p id="gajiKotorHasil"></p>
+        <p id="pajakHasil"></p>
+        <p id="gajiBersihHasil"></p>
+    </div>
+
+    <div class="footer">
+        <footer>
+            <p>UAS Pemrograman Web Dasar - R3F 202433500301 Syamilah Aprilliza</p>
+        </footer>
+    </div>
+
+    <script>
+        document.getElementById('gajiForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+
+            // Ambil nilai input
+            const gajiPokok = parseFloat(document.getElementById('gajiPokok').value);
+            const jamLembur = parseFloat(document.getElementById('jamLembur').value);
+
+            // Konstanta tarif lembur
+            const tarifLembur = 20000;
+
+            // Hitung total lembur
+            const totalLembur = jamLembur * tarifLembur;
+
+            // Hitung gaji kotor
+            const gajiKotor = gajiPokok + totalLembur;
+
+            // Hitung pajak
+            let pajak;
+            if (gajiKotor < 5000000) {
+                pajak = gajiKotor * 0.05;
+            } else if (gajiKotor <= 10000000) {
+                pajak = gajiKotor * 0.10;
+            } else {
+                pajak = gajiKotor * 0.15;
+            }
+
+            // Hitung gaji bersih
+            const gajiBersih = gajiKotor - pajak;
+
+            // Fungsi untuk format Rupiah
+            function formatRupiah(angka) {
+                return 'Rp ' + angka.toLocaleString('id-ID');
+            }
+
+            // Tampilkan hasil
+            document.getElementById('gajiPokokHasil').textContent = 'Gaji Pokok: ' + formatRupiah(gajiPokok);
+            document.getElementById('totalLemburHasil').textContent = 'Total Gaji Lembur: ' + formatRupiah(totalLembur);
+            document.getElementById('gajiKotorHasil').textContent = 'Gaji Kotor: ' + formatRupiah(gajiKotor);
+            document.getElementById('pajakHasil').textContent = 'Pajak Penghasilan: ' + formatRupiah(pajak);
+            document.getElementById('gajiBersihHasil').textContent = 'Gaji Bersih: ' + formatRupiah(gajiBersih);
+
+            // Tampilkan div hasil
+            document.getElementById('hasil').style.display = 'block';
+        });
+    </script>
+</body>
+</html>
